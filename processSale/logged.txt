@@ -1,0 +1,10 @@
+16-05-2021 15:03:30 Exception: Could not search for  item
+se.kth.iv1350.processSale.controller.OperationFailedException: Could not search for  item
+	at se.kth.iv1350.processSale.controller.Controller.searchItem(Controller.java:80)
+	at se.kth.iv1350.processSale.controller.Controller.searchItem(Controller.java:96)
+	at se.kth.iv1350.processSale.view.View.hardCodedCalls(View.java:87)
+	at se.kth.iv1350.processSale.startup.Main.main(Main.java:25)
+Caused by: se.kth.iv1350.processSale.integration.DatabaseConnectionException: Failed to establish a connection to the database
+	at se.kth.iv1350.processSale.integration.ItemRegistry.searchItem(ItemRegistry.java:39)
+	at se.kth.iv1350.processSale.controller.Controller.searchItem(Controller.java:69)
+	... 3 more
