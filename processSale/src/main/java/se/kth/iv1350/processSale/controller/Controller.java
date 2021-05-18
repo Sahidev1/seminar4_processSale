@@ -1,5 +1,7 @@
 package se.kth.iv1350.processSale.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import se.kth.iv1350.processSale.integration.CostumerDTO;
 import se.kth.iv1350.processSale.integration.DatabaseConnectionException;
 import se.kth.iv1350.processSale.integration.IntegrationCreator;
@@ -11,6 +13,7 @@ import se.kth.iv1350.processSale.integration.ItemRegistry;
 import se.kth.iv1350.processSale.model.CashRegister;
 import se.kth.iv1350.processSale.model.Discount;
 import se.kth.iv1350.processSale.model.Sale;
+import se.kth.iv1350.processSale.model.SaleObserver;
 import se.kth.iv1350.processSale.util.Amount;
 
 /**
@@ -24,6 +27,7 @@ public class Controller {
     private final CashRegister cashRegister;
     private Sale sale;
     private Discount discount;
+    private List<SaleObserver> observers = new ArrayList<>();
 
     
     /** 
@@ -69,7 +73,6 @@ public class Controller {
             Item foundItem = itemReg.searchItem(searchedItem, quantity);
             sale.addItemToSale(foundItem);
 
-
             if (sale.hasItemAlreadyBeenAdded(foundItem)){
                 System.out.println(sale.getItemFromTheList(foundItem));
                 return;
@@ -78,7 +81,7 @@ public class Controller {
             System.out.println (foundItem);
         } catch (DatabaseConnectionException DBexc){
             throw new OperationFailedException ("Could not search for "
-                    + " item", DBexc);
+                    + "item", DBexc);
         }
     }
     
@@ -125,7 +128,18 @@ public class Controller {
      * @param paymentAmount the amount to pay for the sale
      */
     public void makePayment (Amount paymentAmount){
+        addObserversToSale();         
         sale.makePayment(paymentAmount);
+    }
+
+    private void addObserversToSale() {
+        for (SaleObserver observer : observers){
+            sale.addSaleObserver(observer);
+        }
+    }
+    
+    public void addSaleObserver (SaleObserver saleObserver){
+        observers.add(saleObserver);
     }
 }
 

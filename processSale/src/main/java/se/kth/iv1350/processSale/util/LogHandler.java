@@ -49,8 +49,8 @@ public class LogHandler {
     }
     
     private String timeOf (){
-    LocalDateTime now = LocalDateTime.now();
-    DateTimeFormatter formattedTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-    return now.format(formattedTime);
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formattedTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        return now.format(formattedTime);
     }  
 }

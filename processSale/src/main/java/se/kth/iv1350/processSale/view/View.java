@@ -17,7 +17,7 @@ import se.kth.iv1350.processSale.util.LogHandler;
 public class View {
     private Controller contr;
     private ErrorMessageHandler showErrorMsg = new ErrorMessageHandler ();
-    private LogHandler logger;
+    private LogHandler logger = LogHandler.getLogHandler();
     
     /** 
      * Constructor for the class View
@@ -26,7 +26,70 @@ public class View {
      */
     public View(Controller contr){
         this.contr = contr;
-        this.logger = LogHandler.getLogHandler();
+        contr.addSaleObserver(new TotalRevenueView());
+        contr.addSaleObserver(new TotalRevenueFileOutput());
+    }
+    
+    public void hardCodedCallsSeminar4 (){
+        contr.newSale();
+        System.out.println ("newSale() method called" + "\n");
+        
+        final String ITEM_NOT_FOUND = "Item could not be found"
+                + " in the item registry, Item is invalid";
+        final String COULD_NOT_SEARCH = "Could not search for item"; 
+        
+        try{
+            String invalidItemIdentifier = "INVALIDIDENTIFIER000";
+            ItemDTO searchedInvalidItem = new ItemDTO (invalidItemIdentifier);
+            contr.searchItem (searchedInvalidItem);
+            System.out.println ("Total cost: " + contr.getTotalPrice() + "\n");
+        } catch (ItemNotFoundException ItemExc){
+            showErrorMsg.displayError(ITEM_NOT_FOUND);
+        } catch (OperationFailedException OPexc){
+            displayAndLog (COULD_NOT_SEARCH, OPexc);
+        }
+        
+        try{
+            ItemDTO databaseCrasher = new ItemDTO (CRASH_DATABASE_IMMEDIATELY);
+            contr.searchItem (databaseCrasher);
+            System.out.println ("Total cost: " + contr.getTotalPrice() + "\n");
+        } catch (ItemNotFoundException ItemExc){
+            showErrorMsg.displayError(ITEM_NOT_FOUND);
+        } catch (OperationFailedException OPexc){
+            displayAndLog (COULD_NOT_SEARCH, OPexc);
+        }
+        
+        try {
+            String itemIdentifier = "AX531319";
+            ItemDTO searchedItem = new ItemDTO (itemIdentifier);
+            contr.searchItem (searchedItem);
+            System.out.println ("Total cost: " + contr.getTotalPrice() + "\n");
+        } catch (ItemNotFoundException ItemExc){
+            showErrorMsg.displayError(ITEM_NOT_FOUND);
+        } catch (OperationFailedException OPexc){
+            displayAndLog (COULD_NOT_SEARCH, OPexc);
+        }
+
+        Amount paymentSale0 = new Amount (100);
+        contr.makePayment(paymentSale0);
+        
+        contr.newSale();
+        System.out.println ("newSale() method called" + "\n");
+        
+        try{
+            String itemIdentifierOfMultipleItems = "BX029510";
+            int quantityOfItem = 3;
+            ItemDTO searchMultipleOfItem = new ItemDTO (itemIdentifierOfMultipleItems);
+            contr.searchItem(searchMultipleOfItem, quantityOfItem); 
+            System.out.println("Total cost: " + contr.getTotalPrice() + "\n");
+        } catch (ItemNotFoundException ItemExc){
+            showErrorMsg.displayError(ITEM_NOT_FOUND);
+        } catch (OperationFailedException OPexc){
+            displayAndLog (COULD_NOT_SEARCH, OPexc);
+        }
+
+        Amount paymentSale1 = new Amount (321);
+        contr.makePayment(paymentSale1);
     }
     
     public void hardCodedCalls (){

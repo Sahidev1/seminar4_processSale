@@ -22,6 +22,6 @@ public class Main {
         Printer printer = new Printer ();
         Controller contr = new Controller(integrationCreator, printer);
         View view = new View (contr);  
-        view.hardCodedCalls();
+        view.hardCodedCallsSeminar4();
     }
 }

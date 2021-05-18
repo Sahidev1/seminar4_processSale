@@ -11,7 +11,7 @@ public class OperationFailedException extends Exception {
     /**
      * Constructor for the exception class
      * 
-     * @param msg to be display when the exception is thrown
+     * @param msg to be displayed when the exception is thrown
      * @param cause the original cause of the exception
      */
     public OperationFailedException(String msg, Exception cause) {

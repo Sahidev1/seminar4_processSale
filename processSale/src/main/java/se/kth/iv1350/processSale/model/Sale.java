@@ -1,5 +1,6 @@
 package se.kth.iv1350.processSale.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import se.kth.iv1350.processSale.integration.CostumerDTO;
 import se.kth.iv1350.processSale.integration.IntegrationCreator;
@@ -17,6 +18,7 @@ public class Sale {
     private final SaleInformation saleInformation;
     private final Payment payment;
     private Discount discount;
+    private List<SaleObserver> observers = new ArrayList<>();
 
     /** 
      * Constructor method for the class Sale
@@ -76,7 +78,14 @@ public class Sale {
         saleInformation.addPayment(paymentAmount);
         payment.giveSaleInformation (saleInformation);
         payment.updateExternalSystems();
+        notifyObservers();
         payment.updateReceipt ();
+    }
+
+    private void notifyObservers() {
+        for (SaleObserver observer : observers){
+            observer.updateTotalRevenue(saleInformation.getTotalPrice());
+        }
     }
     
     /**
@@ -126,6 +135,10 @@ public class Sale {
      */
     private void incrementQuantityOfItem (Item foundItem){
         saleInformation.incrementQuantityOfItem(foundItem);
+    }
+    
+    public void addSaleObserver (SaleObserver saleObserver){
+        observers.add(saleObserver);
     }
     
     /**
