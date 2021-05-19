@@ -21,7 +21,7 @@ public class IntegrationCreator {
     public IntegrationCreator() {
         this.externalInventory = new ExternalInventory();
         this.externalAccounting = new ExternalAccounting();
-        this.costumerRegistry = new CostumerRegistry();
+        this.costumerRegistry = CostumerRegistry.getCostumerRegistry();
         this.itemRegistry = new ItemRegistry();
     }
     

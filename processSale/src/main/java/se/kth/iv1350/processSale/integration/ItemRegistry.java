@@ -117,5 +117,11 @@ public class ItemRegistry {
         ItemDTO itemDTO2 = new ItemDTO ("BX029510", "Pumpkin", priceOfItem2, VATofItem2);
         Item pumpkin = new Item (itemDTO2);
         itemData.add(pumpkin);
+        
+        Amount priceOfItem3 = new Amount (231);
+        Percentage VATofItem3 = new Percentage (25);
+        ItemDTO itemDTO3 = new ItemDTO ("VZ114037", "Jacko-o-lantern", priceOfItem3, VATofItem3);
+        Item jackolantern = new Item (itemDTO3);
+        itemData.add(jackolantern);
     }
 }

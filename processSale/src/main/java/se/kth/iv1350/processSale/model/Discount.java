@@ -6,6 +6,8 @@ import se.kth.iv1350.processSale.integration.CostumerRegistry;
 import se.kth.iv1350.processSale.integration.IntegrationCreator;
 import se.kth.iv1350.processSale.integration.Item;
 import se.kth.iv1350.processSale.util.Percentage;
+import se.kth.iv1350.processSale.util.discountAlgorithms.DefaultDiscount;
+import se.kth.iv1350.processSale.util.discountAlgorithms.HalloweenDiscount;
 
 /**
  * This class is used to deal with discount related logic in the case of a
@@ -15,6 +17,7 @@ import se.kth.iv1350.processSale.util.Percentage;
  */
 public class Discount {
     private Sale sale;
+    private DiscountCalculator discountCalc;
     private CostumerDTO costumerDTO;
     private CostumerRegistry costumerRegistry;
     private Percentage calculatedDiscount;
@@ -44,7 +47,8 @@ public class Discount {
     void discountRequest (CostumerDTO costumerDTO, Sale sale){
         this.sale = sale;
         this.costumerDTO = costumerDTO;
-        calculatedDiscount = calculateDiscount();
+        discountCalc = new HalloweenDiscount ();
+        calculatedDiscount = discountCalc.calculateDiscount(this.sale, this.costumerDTO);
     }
     
     /**
@@ -57,46 +61,4 @@ public class Discount {
         this.costumerRegistry = integrations.getCostumerRegistry();
     }
     
-    /** 
-     * This method calculates the discount
-     * 
-     * Observe that when the searchCostumer call is made to costumerRegistry
-     * that if there's a match the customerDTO is UPDATED with the discount the
-     * costumer is entitled to
-     * 
-     * @return percent discount 
-     */
-    private Percentage calculateDiscount (){
-        Percentage calculatedDiscount = new Percentage (0);
-        costumerRegistry.searchCostumer(costumerDTO);
-        List<Item> itemsInSale = sale.getListOfItems();
-        
-        calculatedDiscount = costumerDTO.getBaseDiscountForCustomer().add(calculatedDiscount);
-        calculatedDiscount = discountBasedOnNumberOfItems(itemsInSale, calculatedDiscount);
-        calculatedDiscount = discountBasedOnTotalPrice(calculatedDiscount);
-        
-        return calculatedDiscount;
-    }
-
-    private Percentage discountBasedOnTotalPrice(Percentage calculatedDiscount) {
-        if (sale.getTotalPrice().getValue() > 100 && sale.getTotalPrice().getValue() < 1000){
-            calculatedDiscount = calculatedDiscount.add(new Percentage (2));
-        }
-        
-        else if (sale.getTotalPrice().getValue() >= 1000){
-            calculatedDiscount = calculatedDiscount.add(new Percentage (5));
-        }
-        return calculatedDiscount;
-    }
-
-    private Percentage discountBasedOnNumberOfItems(List<Item> itemsInSale, Percentage calculatedDiscount) {
-        if (itemsInSale.size() > 1 && itemsInSale.size() < 10){
-            calculatedDiscount = calculatedDiscount.add(new Percentage(5));
-        }
-        
-        else if (itemsInSale.size() >= 10){
-            calculatedDiscount = calculatedDiscount.add(new Percentage(10));
-        }
-        return calculatedDiscount;
-    }
 }

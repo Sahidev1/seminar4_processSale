@@ -11,12 +11,22 @@ import se.kth.iv1350.processSale.util.Percentage;
  * @author Ali Sahibi
  */
 public class CostumerRegistry {
+    private static final CostumerRegistry costumerReg = new CostumerRegistry ();
     private final List<CostumerDTO> costumerData = new ArrayList<>();
+    
+    /**
+     * Getter method for the CostumerRegistry object
+     * 
+     * @return the CostumerRegistry object
+     */
+    public static CostumerRegistry getCostumerRegistry (){
+        return costumerReg;
+    }
     
     /** 
      * Constructor for the class CostumerRegistry
      */
-    public CostumerRegistry() {
+    private CostumerRegistry() {
         retrieveData ();
     }
     

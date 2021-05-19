@@ -1,4 +1,4 @@
-19-05-2021 12:52:44 Exception: Could not search for item
+19-05-2021 13:21:55 Exception: Could not search for item
 se.kth.iv1350.processSale.controller.OperationFailedException: Could not search for item
 	at se.kth.iv1350.processSale.controller.Controller.searchItem(Controller.java:83)
 	at se.kth.iv1350.processSale.controller.Controller.searchItem(Controller.java:99)
